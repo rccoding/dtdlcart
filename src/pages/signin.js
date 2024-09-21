@@ -52,7 +52,6 @@ const SignInPage = () => {
       </div>
       <div className="w-1/2 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white flex flex-col justify-center items-center">
         <h1 className="text-3xl font-bold">Hello, Friend!</h1>
-        <p className="mt-4 text-lg">SignUp krte h</p>
         <button onClick={() => navigate('/')} className="mt-8 border-white border py-2 px-6 rounded-full">
           Sign Up
         </button>
