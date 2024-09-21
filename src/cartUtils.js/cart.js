@@ -26,7 +26,7 @@ function Cart() {
     const unsubscribe = onValue(cartRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        setCartItems(data.items || []);
+        setCartItems(data?.items || []);
         if (!user) {
           setUser(data.users ? data.users[Math.floor(Math.random() * data.users.length)] : users[Math.floor(Math.random() * users.length)]);
         }
