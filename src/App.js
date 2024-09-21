@@ -1,79 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Navigate, Routes, Link, useParams } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useParams } from 'react-router-dom';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, onValue, set } from 'firebase/database';
 import { initialCartItems } from './cartUtils.js/cart';
+import ShareableLink from './QrCodeGenerator';
 import './App.css';
-
+import Cart from './cartUtils.js/cart';
+import {QRCodeSVG} from 'qrcode.react';
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyByLz4lXrkyIZj8PaeoLzmbLI4Z9zTSjJI",
-  authDomain: "dtdlcart.firebaseapp.com",
-  projectId: "dtdlcart",
-  storageBucket: "dtdlcart.appspot.com",
-  messagingSenderId: "726758780720",
-  appId: "1:726758780720:web:ae7003d646f542ef4ae2f5",
-  measurementId: "G-30NN22HFMJ"
+  apiKey: "AIzaSyCfEptfM-6JOyrFhKMoVYpjgkF7XaYE8xs",
+  authDomain: "dtdl-3f499.firebaseapp.com",
+  databaseURL: "https://dtdl-3f499-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "dtdl-3f499",
+  storageBucket: "dtdl-3f499.appspot.com",
+  messagingSenderId: "882326858288",
+  appId: "1:882326858288:web:5fef4932b03a8080b0dbf5",
+  measurementId: "G-TKPRE9FH6Z"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-function SharedCartPage() {
-  const [cartItems, setCartItems] = useState(initialCartItems);
-  const { sessionId } = useParams();
+const users = ['Alice', 'Bob', 'Charlie', 'David'];
 
-  useEffect(() => {
-    const cartRef = ref(database, `carts/${sessionId}`);
-    onValue(cartRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        setCartItems(data);
-      }
-    });
-  }, [sessionId]);
-
-  const updateCart = (newCart) => {
-    setCartItems(newCart);
-    set(ref(database, `carts/${sessionId}`), newCart);
-  };
-
-  const handleAddItem = () => {
-    const newItem = { id: Date.now(), name: `New Item ${cartItems.length + 1}`, price: Math.floor(Math.random() * 50) + 1 };
-    updateCart([...cartItems, newItem]);
-  };
-
-  const handleRemoveItem = (itemId) => {
-    updateCart(cartItems.filter(item => item.id !== itemId));
-  };
-
-  return (
-    <div>
-      <h2>Shared Cart (Session: {sessionId})</h2>
-      <ul>
-        {cartItems.map((item) => (
-          <li key={item.id}>
-            {item.name} - ${item.price}
-            <button onClick={() => handleRemoveItem(item.id)}>Remove</button>
-          </li>
-        ))}
-      </ul>
-      <button onClick={handleAddItem}>Add Random Item</button>
-      <p>Share this link to collaborate: {window.location.href}</p>
-    </div>
-  );
-}
 
 function App() {
-  return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/shared-cart/:sessionId" element={<SharedCartPage />} />
-        </Routes>
-      </div>
-    </Router>
-  );
+    return (
+      <Router>
+        <div className="App">
+          <Routes>
+            <Route path="/shared-cart/:sessionId" element={<Cart />} />
+          </Routes>
+        </div>
+      </Router>
+    );
 }
+
 export default App;
