@@ -13,11 +13,17 @@ const dataPacks = [
   { id: 5, name: "Business Pack", price: 49.99, description: "50GB data, 2000 minutes, Priority support" },
 ];
 
+// Function to generate a random session ID
+const generateRandomSessionId = () => {
+    return Math.random().toString(36).substring(2, 10); // Generates a random alphanumeric string
+};
+
+
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
-  const [user, setUser] = useState('');
+  const [user, setUser] = useState('Alice');
   const [selectedPack, setSelectedPack] = useState('');
-  const { sessionId } = useParams();
+  const { sessionId = generateRandomSessionId() } = useParams(); // Use random sessionId if not provided
 
   const database = getDatabase();
 
@@ -38,7 +44,7 @@ function Cart() {
     });
 
     return () => unsubscribe();
-  }, [sessionId, user, database]);
+  }, [ user, database]);
 
   const updateCart = (newItems) => {
     const cartRef = ref(database, `carts/${sessionId}`);
@@ -65,11 +71,13 @@ function Cart() {
     }
   };
 
+  const shareableLink = `${window.location.origin}/cart/${sessionId}`; // Create a shareable link
+
   return (
-    <div className="min-h-screen bg-[#E10075] gray-100 py-6 flex flex-col justify-center sm:py-12">
+    <div className="min-h-screen gray-100 py-6 flex flex-col justify-center sm:py-12">
       <div className="relative py-3 sm:max-w-xl sm:mx-auto">
-        <div className="absolute inset-0 bg-[#E10075] gradient-to-r from-cyan-400 to-light-blue-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
-        <div className="relative px-4 py-10 bg-[#E10075] white shadow-lg sm:rounded-3xl sm:p-20">
+        <div className="absolute inset-0  gradient-to-r from-cyan-400 to-light-blue-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
+        <div className="relative px-4 py-10  white shadow-lg sm:rounded-3xl sm:p-20">
           <div className="max-w-md mx-auto">
             <div>
               <h1 className="text-2xl font-semibold text-center">Shared Cart</h1>
@@ -118,6 +126,15 @@ function Cart() {
                   </button>
                 </div>
               </div>
+            </div>
+            <div className="mt-4 text-center">
+              <p className="text-sm text-gray-600">Share this link with others:</p>
+              <input
+                type="text"
+                value={shareableLink}
+                readOnly
+                className="mt-2 p-2 border border-gray-300 rounded-md w-full"
+              />
             </div>
           </div>
           <ShareableLink />
