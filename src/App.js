@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, useParams } from 'react-router-dom';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, onValue, set } from 'firebase/database';
-import { initialCartItems } from './cartUtils.js/cart';
 import ShareableLink from './QrCodeGenerator';
 import SignUpPage from './pages/signup';
 import SignInPage from './pages/signin';
-import HomePage from './pages/homepage';
 import FirstPage from './pages/firstpage';
 import './App.css';
-import {QRCodeSVG} from 'qrcode.react';
+
 // Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCfEptfM-6JOyrFhKMoVYpjgkF7XaYE8xs",
